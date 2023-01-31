@@ -36,7 +36,7 @@ int main()
     mapSetup();
 
     user = playerSetup();
-    
+
     /* main game loop */
     while ((ch = getch()) != 'q') 
     {
@@ -52,7 +52,6 @@ int screenSetup()
 {
     initscr();
     noecho();
-    refresh();
 
     return 0;
 }
@@ -98,21 +97,27 @@ int drawRoom(Room* room)
     for (x = room->xPosition; x < room->xPosition + room->width; x++)
     {
         mvprintw(room->yPosition, x, "-");
-        mvprintw(room->yPosition + room->height, x, "-");
+        mvprintw(room->yPosition + room->height - 1, x, "-");
     }
     /* draw left and rigth sides of room and fill the room
      * with empty space */
-    for (y = room->yPosition + 1; y < room->yPosition + room->height; y++)
+    for (y = room->yPosition + 1;
+         y < room->yPosition + room->height - 1;
+         y++)
     {
         mvprintw(y, room->xPosition, "|"); /* left */
 
+        /* fill the room with empty space */
         for (x = room->xPosition + 1;
-             x < room->xPosition + room->width- 1; x++)
+             x < room->xPosition + room->width- 1;
+             x++)
         {
             mvprintw(y, x, ".");
         }
+
         mvprintw(y, room->xPosition + room->width - 1, "|"); /* right */
     }
+    return 0;
 }
 
 Player* playerSetup()
@@ -168,6 +173,7 @@ int handleInput(int input, Player* user)
     }
 
     checkPostion(destinationY, destinationX, user);
+    return 0;
 }
 
 /* check what is at next position */
@@ -181,6 +187,7 @@ int checkPostion(int destinationY, int destinationX, Player* user)
             move(user->yPosition, user->xPosition);
             break;
     }
+    return 0;
 }
 
 int playerMove(int y, int x, Player* user)
@@ -192,4 +199,5 @@ int playerMove(int y, int x, Player* user)
 
     mvprintw(user->yPosition, user->xPosition, "@");
     move(user->yPosition, user->xPosition); 
+    return 0;
 }
