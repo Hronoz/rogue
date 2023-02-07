@@ -34,6 +34,7 @@ int checkPostion(int destinationY, int destinationX, Player* user);
 Room* createRoom(int y, int x, int height, int width);
 int drawRoom(Room* room);
 int connectDoors(Position *doorOne, Position *doorTwo);
+
 int main()
 {
     Player *user;
@@ -216,7 +217,6 @@ int connectDoors(Position *doorOne, Position *doorTwo)
             }
         }
         mvprintw(temp.y, temp.x, "#");
-        getch();
     }
 
     return 0;
@@ -242,29 +242,25 @@ int handleInput(int input, Player* user)
     int destinationY, destinationX;
     switch (input) 
     {
+        /* move right */
+        case 'l':
+            destinationY = user->position.y;
+            destinationX = user->position.x + 1;
+            break;
         /* move up */
-        case 'w':
-        case 'W':
+        case 'k':
             destinationY = user->position.y - 1;
             destinationX = user->position.x;
             break;
         /* move left */
-        case 'a':
-        case 'A':
+        case 'h':
             destinationY = user->position.y;
             destinationX = user->position.x - 1;
             break;
         /* move down*/
-        case 's':
-        case 'S':
+        case 'j':
             destinationY = user->position.y + 1;
             destinationX = user->position.x;
-            break;
-        /* move right */
-        case 'd':
-        case 'D':
-            destinationY = user->position.y;
-            destinationX = user->position.x + 1;
             break;
         default:
             break;
