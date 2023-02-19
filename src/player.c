@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include "rogue.h"
 
@@ -17,61 +18,65 @@ Player* playerSetup()
     return newPlayer;
 }
 
-int handleInput(int input, Player* user)
+Position* handleInput(int input, Player* user)
 {
-    int destinationY, destinationX;
+    Position *newPosition;
+    newPosition = malloc(sizeof(Position));
     switch (input) 
     {
         /* move right */
         case 'l':
-            destinationY = user->position.y;
-            destinationX = user->position.x + 1;
+            newPosition->y = user->position.y;
+            newPosition->x = user->position.x + 1;
             break;
         /* move up */
         case 'k':
-            destinationY = user->position.y - 1;
-            destinationX = user->position.x;
+            newPosition->y = user->position.y - 1;
+            newPosition->x = user->position.x;
             break;
         /* move left */
         case 'h':
-            destinationY = user->position.y;
-            destinationX = user->position.x - 1;
+            newPosition->y = user->position.y;
+            newPosition->x = user->position.x - 1;
             break;
         /* move down*/
         case 'j':
-            destinationY = user->position.y + 1;
-            destinationX = user->position.x;
+            newPosition->y = user->position.y + 1;
+            newPosition->x = user->position.x;
             break;
         default:
             break;
     }
 
-    checkPostion(destinationY, destinationX, user);
-    return 0;
+    return newPosition;
 }
 
 /* check what is at next position */
-int checkPostion(int destinationY, int destinationX, Player* user)
+int checkPostion(Position *newPosition, Player* user, char **level)
 {
-    switch (mvinch(destinationY, destinationX)) {
+    switch (mvinch(newPosition->y, newPosition->x)) {
         case '.':
         case '#':
         case '+':
-            playerMove(destinationY, destinationX, user);
+            playerMove(newPosition, user, level);
             break;
         default:
-            move(user->position.y, user->position.x);
             break;
     }
     return 0;
 }
 
-int playerMove(int y, int x, Player* user)
+int playerMove(Position *newPosition, Player* user, char **level)
 {
-    mvprintw(user->position.y, user->position.x, ".");
+    char buffer[8];
 
-    user->position.y = y;
-    user->position.x = x;
+    /* conerting the single character to string */
+    sprintf(buffer, "%c",level[user->position.y][user->position.x]);
+
+    mvprintw(user->position.y, user->position.x, "%s", buffer);
+
+    user->position.y = newPosition->y;
+    user->position.x = newPosition->x;
 
     mvprintw(user->position.y, user->position.x, "@");
     move(user->position.y, user->position.x); 

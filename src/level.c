@@ -33,8 +33,8 @@ char** saveLevelPositions()
     for (y = 0; y < 25; y++) {
         positions[y] = malloc(sizeof(char) * 100);
         for (x = 0; x < 100; x++) {
-            positions[y][x] = mvinch(y, x);
-        
+            positions[y][x] = (char)mvinch(y, x);
         }
     }
+    return positions;
 }
