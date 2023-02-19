@@ -2,16 +2,26 @@
 CC = gcc
 
 # FLAGS specifies the compilation options we're using
-FLAGS = -Wall -g
+CFLAGS = -Wall -g -I$(IDIR)
+IDIR = ./include/
 
-# OBJS specifies whis file to compile
-OBJS = main.c
+# SOURCES specifes the src files
+SRCDIR = ./src/
+SOURCES = $(SRCDIR)*.c
 
 # LINKER specifies the libraies we're linking against
 LINKER = -lncurses
 
 # OBJD specifies the name of our executable
-OBJD = main
+OBJD = rogue
 
-all: $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) $(LINKER) -o $(OBJD)
+all: clean rogue
+
+rogue:
+	$(CC) $(CFLAGS) $(SOURCES) $(LINKER) -o $(OBJD)
+
+run:
+	./rogue
+
+clean:
+	rm rogue
